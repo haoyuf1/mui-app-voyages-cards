@@ -34,7 +34,7 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
 
         const mycardvariables = require('./default_cols.json');
         var arrayLength = mycardvariables.length;
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < arrayLength; i++) {
             data.append('selected_fields', mycardvariables[i]);
         }
 
@@ -52,19 +52,18 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
     return (
         <div>
             <p>helloooooo</p>
-            <Grid container >
+            <Grid container>
                 {
-
                     value.map(table => (
                         <div>
                             <p>hello</p>
-                            <Grid item xs={8}>
-                                <Card>
+                            <Grid item xs={6} margin={2}>
+                                <Card sx={{width: 300, color: 'white', backgroundColor: 'lightblue'}}>
                                     <CardHeader
                                         title={'Voyage: ' + table.voyage_id}
                                     />
                                     <CardContent>
-                                        <Table style={{tableLayout: 'fixed'}}>
+                                        <Table>
                                             <TableBody>
                                                 {
                                                     Object.keys(table)
@@ -74,8 +73,9 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
                                                             if (typeof table[k] === 'object') {
                                                                 return (
                                                                     <TableRow align="left">
-                                                                        <TableCell
-                                                                            align="left">{label[k].flatlabel}</TableCell>
+                                                                        <TableCell align="left">
+                                                                            {label[k].flatlabel}
+                                                                        </TableCell>
                                                                         <TableCell align="left">
                                                                             {Object.values(table[k])
                                                                                 .map(val => (<p>{val}</p>))}
@@ -85,9 +85,12 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
                                                             } else {
                                                                 return (
                                                                     <TableRow align="left">
-                                                                        <TableCell
-                                                                            align="left">{label[k].flatlabel} </TableCell>
-                                                                        <TableCell align="left">{table[k]}</TableCell>
+                                                                        <TableCell align="left">
+                                                                            {label[k].flatlabel}
+                                                                        </TableCell>
+                                                                        <TableCell align="left">
+                                                                            {table[k]}
+                                                                        </TableCell>
                                                                     </TableRow>
                                                                 )
                                                             }
