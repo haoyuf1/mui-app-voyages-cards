@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-###npm install @mui/material
+### npm install @mui/material
 
 import Card from '@mui/material/Card';
 <br />
