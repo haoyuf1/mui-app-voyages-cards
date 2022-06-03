@@ -55,7 +55,7 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
         value.map(table => (
           <div>
           <Grid item>
-          <Card>
+          <Card sx={{color: 'white'}}>
           <CardHeader
               title={'Voyage: '+table.voyage_id}
               style={{backgroundColor: "darkblue"}}
