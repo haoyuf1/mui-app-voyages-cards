@@ -9,6 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 
+import Grid from '@mui/material/Grid';
+
 export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
   const [label, setLabel] = useState([]); 
   const [value, setValue] = useState([]); 
@@ -21,11 +23,11 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
 
         axios.options('/voyage/?hierarchical=False')
               .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setLabel(response.data);
               })
               .catch(function (error) {
-                // console.log(error);
+                //console.log(error);
               });
         
         var data = new FormData();
@@ -33,13 +35,13 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
 
         const mycardvariables = require('./default_cols.json');
         var arrayLength = mycardvariables.length;
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < arrayLength; i++) {
           data.append('selected_fields', mycardvariables[i]);
         }
 
         axios.post('/voyage/', data)
             .then(response => {
-              console.log(response.data);
+              // console.log(response.data);
               setValue(response.data);
             })
             .catch(function (error) {
@@ -47,16 +49,19 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
             });
   }, []);
 
-  value.map(table => (console.log(table)))
   return (
-    <div>{
-      value.map(table => (
+    <Grid container>
+      {
+        value.map(table => (
+          <div>
+          <Grid item>
           <Card>
           <CardHeader
               title={'Voyage: '+table.voyage_id}
+              style={{backgroundColor: "darkblue"}}
           />
             <CardContent>
-              <Table style={{ tableLayout: 'fixed' }}>
+              <Table style={{backgroundColor: "lightblue"}}>
                 <TableBody>
                   {
                     Object.keys(table)
@@ -66,7 +71,7 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
                       if (typeof table[k] === 'object') {
                         return (
                           <TableRow align="left">
-                            <TableCell align="left">{k}</TableCell>
+                            <TableCell align="left">{label[k].flatlabel}</TableCell>
                             <TableCell align="left">
                               {Object.values(table[k])
                               .map(val => (<p>{val}</p>))}
@@ -76,28 +81,21 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
                       else {
                         return (
                           <TableRow align="left">
-                            <TableCell align="left">{k} </TableCell>
+                            <TableCell align="left">{label[k].flatlabel} </TableCell>
                             <TableCell align="left">{table[k]}</TableCell>
                           </TableRow>
                           )}
                       })
-                    // .map(k => (
-                    //   <TableRow align="left">
-                    //     <TableCell align="left">{k} </TableCell>
-                    //     {/* <TableCell align="left">{table[k]}</TableCell> */}
-                    //     <TableCell align="left">
-                    //       {Object.values(table[k])
-                    //       .map(val => (<p>{val}</p>))}
-                    //     </TableCell>
-                    //   </TableRow>
-                    // ))
                   }
                 </TableBody>
               </Table>
             </CardContent>
-          </Card>))}
-    </div>
-  );
+          </Card>
+          </Grid>
+          </div>
+    ))}
+    </Grid>
+    );
 });
 
 export default ElevatedHeaderCardDemo;
