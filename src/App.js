@@ -50,19 +50,17 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
 
     //value.map(table => (console.log(table)))
     return (
-        <div>
-            <p>helloooooo</p>
             <Grid container>
                 {
                     value.map(table => (
                         <div>
-                            <p>hello</p>
                             <Grid item xs={6} margin={2}>
-                                <Card sx={{width: 300, color: 'white', backgroundColor: 'lightblue'}}>
+                                <Card sx={{width: 300, color: 'white'}}>
                                     <CardHeader
+                                        style={{backgroundColor:'darkblue'}}
                                         title={'Voyage: ' + table.voyage_id}
                                     />
-                                    <CardContent>
+                                    <CardContent style={{backgroundColor:'lightblue'}}>
                                         <Table>
                                             <TableBody>
                                                 {
@@ -102,7 +100,6 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
                                 </Card></Grid></div>
                     ))
                 }</Grid>
-        </div>
     );
 });
 
