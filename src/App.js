@@ -21,7 +21,7 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
 
         axios.options('/voyage/?hierarchical=False')
               .then(response => {
-                // console.log(response.data);
+                console.log(response.data);
                 setLabel(response.data);
               })
               .catch(function (error) {
@@ -33,7 +33,7 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
 
         const mycardvariables = require('./default_cols.json');
         var arrayLength = mycardvariables.length;
-        for (var i = 0; i < arrayLength; i++) {
+        for (var i = 0; i < 4; i++) {
           data.append('selected_fields', mycardvariables[i]);
         }
 
@@ -43,40 +43,59 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
               setValue(response.data);
             })
             .catch(function (error) {
-              console.log(error);
+              // console.log(error);
             });
   }, []);
 
+  value.map(table => (console.log(table)))
   return (
     <div>{
       value.map(table => (
           <Card>
           <CardHeader
               title={'Voyage: '+table.voyage_id}
-            />
+          />
             <CardContent>
               <Table style={{ tableLayout: 'fixed' }}>
                 <TableBody>
                   {
                     Object.keys(table)
-                    .filter(k => table[k] !== null && table[k].length !== 0)
-                    .map(k => (
-                      <TableRow align="left">
-                        <TableCell align="left">{k} </TableCell>
-                        <TableCell align="left">{table[k]}</TableCell>
-                        {/* <TableCell align="left">
-                          {Object.values(table[k])
-                            .filter(val => val !== null)
-                            .map(val => (<p>{val}</p>))}
-                        </TableCell> */}
-                      </TableRow>
-                    ))
-                    
+                    .filter(k => table[k] !== null && 
+                                 table[k].length !== 0)
+                    .map(k => {
+                      if (typeof table[k] === 'object') {
+                        return (
+                          <TableRow align="left">
+                            <TableCell align="left">{k}</TableCell>
+                            <TableCell align="left">
+                              {Object.values(table[k])
+                              .map(val => (<p>{val}</p>))}
+                            </TableCell>
+                          </TableRow>
+                          )}
+                      else {
+                        return (
+                          <TableRow align="left">
+                            <TableCell align="left">{k} </TableCell>
+                            <TableCell align="left">{table[k]}</TableCell>
+                          </TableRow>
+                          )}
+                      })
+                    // .map(k => (
+                    //   <TableRow align="left">
+                    //     <TableCell align="left">{k} </TableCell>
+                    //     {/* <TableCell align="left">{table[k]}</TableCell> */}
+                    //     <TableCell align="left">
+                    //       {Object.values(table[k])
+                    //       .map(val => (<p>{val}</p>))}
+                    //     </TableCell>
+                    //   </TableRow>
+                    // ))
                   }
                 </TableBody>
               </Table>
             </CardContent>
-            </Card>))}
+          </Card>))}
     </div>
   );
 });
