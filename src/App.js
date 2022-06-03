@@ -80,7 +80,7 @@ export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
                 <TableBody>
                   {
                     Object.keys(table)
-                    .filter(k => table[k] !== null && table[k].length != 0)
+                    .filter(k => table[k] !== null && table[k].length !== 0)
                     .map(k => (
                       <TableRow align="left">
                         <TableCell align="left">{k} </TableCell>
