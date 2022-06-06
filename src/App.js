@@ -13,7 +13,7 @@ import Grid from '@mui/material/Grid';
 export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
     const [label, setLabel] = useState([]);
     const [value, setValue] = useState([]);
-    const AUTH_TOKEN = 'Token 77e6b7487f5c3aa4275257eb5f77ad06e8c62a39';
+    const AUTH_TOKEN = 'Token abcd';
 
     useEffect(() => {
         axios.defaults.baseURL = 'https://voyages3-api.crc.rice.edu';
