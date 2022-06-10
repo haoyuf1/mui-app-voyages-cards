@@ -1,106 +1,29 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useContext } from "react";
+import Cards from './Cards';
 import axios from 'axios';
 
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Table from '@mui/material/Table';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableBody from '@mui/material/TableBody';
-import Grid from '@mui/material/Grid';
+export const AppContext = React.createContext(null);
+function App() {
+  // Env Var
+  axios.defaults.baseURL = process.env.REACT_APP_BASEURL;
+  axios.defaults.headers.common['Authorization'] = process.env.REACT_APP_AUTHTOKEN;
+  // Local Var
+  const [label, setLabel] = useState([]);
+  axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-export const ElevatedHeaderCardDemo = React.memo(function ElevatedHeaderCard() {
-    const [label, setLabel] = useState([]);
-    const [value, setValue] = useState([]);
-    const AUTH_TOKEN = 'Token abcd';
+  axios.options('/voyage/?hierarchical=False')
+    .then(response => {
+        console.log(response.data);
+        setLabel(response.data);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 
-    useEffect(() => {
-        axios.defaults.baseURL = 'https://voyages3-api.crc.rice.edu';
-        axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-        axios.defaults.headers.post['Content-Type'] = 'application/json';
-
-        axios.options('/voyage/?hierarchical=False')
-            .then(response => {
-                console.log(response.data);
-                setLabel(response.data);
-            })
-            .catch(function (error) {
-                // console.log(error);
-            });
-
-        var data = new FormData();
-        data.append('hierarchical', 'False');
-
-        const mycardvariables = require('./default_cols.json');
-        var arrayLength = mycardvariables.length;
-        for (var i = 0; i < arrayLength; i++) {
-            data.append('selected_fields', mycardvariables[i]);
-        }
-
-        axios.post('/voyage/', data)
-            .then(response => {
-                console.log(response.data);
-                setValue(response.data);
-            })
-            .catch(function (error) {
-                // console.log(error);
-            });
-    }, []);
-
-    //value.map(table => (console.log(table)))
-    return (
-            <Grid container>
-                {
-                    value.map(table => (
-                        <div>
-                            <Grid item xs={6} margin={2}>
-                                <Card sx={{width: 300, color: 'white'}}>
-                                    <CardHeader
-                                        style={{backgroundColor:'darkblue'}}
-                                        title={'Voyage: ' + table.voyage_id}
-                                    />
-                                    <CardContent style={{backgroundColor:'lightblue'}}>
-                                        <Table>
-                                            <TableBody>
-                                                {
-                                                    Object.keys(table)
-                                                        .filter(k => table[k] !== null &&
-                                                            table[k].length !== 0)
-                                                        .map(k => {
-                                                            if (typeof table[k] === 'object') {
-                                                                return (
-                                                                    <TableRow align="left">
-                                                                        <TableCell align="left">
-                                                                            {label[k].flatlabel}
-                                                                        </TableCell>
-                                                                        <TableCell align="left">
-                                                                            {Object.values(table[k])
-                                                                                .map(val => (<p>{val}</p>))}
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                )
-                                                            } else {
-                                                                return (
-                                                                    <TableRow align="left">
-                                                                        <TableCell align="left">
-                                                                            {label[k].flatlabel}
-                                                                        </TableCell>
-                                                                        <TableCell align="left">
-                                                                            {table[k]}
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                )
-                                                            }
-                                                        })
-                                                }
-                                            </TableBody>
-                                        </Table>
-                                    </CardContent>
-                                </Card></Grid></div>
-                    ))
-                }</Grid>
-    );
-});
-
-export default ElevatedHeaderCardDemo;
+  return (
+    <AppContext.Provider value={{label}}>
+        <Cards />
+    </AppContext.Provider>
+  )
+};
+export default App;
